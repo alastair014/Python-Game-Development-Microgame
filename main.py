@@ -1,55 +1,126 @@
+"""
+main.py — pygame Starter Project
+=================================
+Session 1 Template: Player Movement + Enemy Block
+
+HOW TO RUN:
+    python main.py
+
+CONTROLS:
+    Arrow Keys  → Move the white player square
+    ESC         → Quit the game
+"""
+
 import pygame
 import sys
 
-# 1. INITIALIZE
+# ─────────────────────────────────────────
+#  INITIALISE pygame
+# ─────────────────────────────────────────
 pygame.init()
-screen = pygame.display.set_mode((640, 480))
-pygame.display.set_caption("My First Pygame")
+
+# ─────────────────────────────────────────
+#  SCREEN / WINDOW SETUP
+# ─────────────────────────────────────────
+SCREEN_WIDTH  = 640
+SCREEN_HEIGHT = 480
+TITLE         = "pygame Starter — Session 1"
+
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption(TITLE)
+
+# ─────────────────────────────────────────
+#  CLOCK  (controls frames-per-second)
+# ─────────────────────────────────────────
 clock = pygame.time.Clock()
+FPS = 60
 
-# PART 4 & 5 — Define Player and Enemy Rectangles
-# player = pygame.Rect(x, y, width, height)
+# ─────────────────────────────────────────
+#  COLOURS  (R, G, B)
+# ─────────────────────────────────────────
+BLACK  = (  0,   0,   0)
+WHITE  = (255, 255, 255)
+RED    = (255,   0,   0)
+GRAY   = ( 40,  40,  40)   # subtle grid / background tint
+
+# ─────────────────────────────────────────
+#  GAME OBJECTS
+# ─────────────────────────────────────────
+
+# Player  — white square, starts near top-left
 player = pygame.Rect(100, 100, 40, 40)
-enemy = pygame.Rect(300, 200, 40, 40)
+PLAYER_SPEED = 5
 
-# PART 6 — The Game Loop
+# Enemy   — red square, starts centre-right
+enemy = pygame.Rect(300, 200, 40, 40)
+ENEMY_SPEED = 3
+
+# ─────────────────────────────────────────
+#  HELPER: draw a simple grid (optional visual)
+# ─────────────────────────────────────────
+def draw_grid():
+    for x in range(0, SCREEN_WIDTH, 40):
+        pygame.draw.line(screen, GRAY, (x, 0), (x, SCREEN_HEIGHT))
+    for y in range(0, SCREEN_HEIGHT, 40):
+        pygame.draw.line(screen, GRAY, (0, y), (SCREEN_WIDTH, y))
+
+# ─────────────────────────────────────────
+#  GAME LOOP
+# ─────────────────────────────────────────
 running = True
+
 while running:
-    # --- EVENT HANDLING ---
+
+    # ── EVENT HANDLING ───────────────────
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
 
-    # --- UPDATE (PART 4: Player Movement) ---
+    # ── UPDATE ───────────────────────────
+
+    # 1. Read keyboard input & move player
     keys = pygame.key.get_pressed()
+
     if keys[pygame.K_LEFT]:
-        player.x -= 5
+        player.x -= PLAYER_SPEED
     if keys[pygame.K_RIGHT]:
-        player.x += 5
+        player.x += PLAYER_SPEED
     if keys[pygame.K_UP]:
-        player.y -= 5  # Corrected from x to y
+        player.y -= PLAYER_SPEED          # NOTE: UP decreases y in pygame
     if keys[pygame.K_DOWN]:
-        player.y += 5  # Corrected from x to y
+        player.y += PLAYER_SPEED
 
-    # --- UPDATE (PART 5: Enemy Movement) ---
-    enemy.x -= 3
-    if enemy.x < -40: # If it goes off the left edge
-        enemy.x = 640 # Reset to the right edge
+    # 2. Keep player inside the window
+    player.clamp_ip(screen.get_rect())
 
-    # --- RENDER (PART 6) ---
-    screen.fill((0, 0, 0)) # Clear screen with Black
-    
-    # Draw the Player (White)
-    pygame.draw.rect(screen, (255, 255, 255), player)
-    
-    # Draw the Enemy (Red)
-    pygame.draw.rect(screen, (255, 0, 0), enemy)
+    # 3. Move enemy left; wrap around when off-screen
+    enemy.x -= ENEMY_SPEED
+    if enemy.right < 0:
+        enemy.x = SCREEN_WIDTH
 
-    # Update the display
+    # ── RENDER ───────────────────────────
+
+    # 1. Clear the screen
+    screen.fill(BLACK)
+
+    # 2. Optional subtle grid
+    draw_grid()
+
+    # 3. Draw game objects
+    pygame.draw.rect(screen, WHITE, player)   # player
+    pygame.draw.rect(screen, RED,   enemy)    # enemy
+
+    # 4. Flip / update the display
     pygame.display.flip()
 
-    # Cap the frame rate to 60 FPS
-    clock.tick(60)
+    # 5. Tick the clock (cap at FPS)
+    clock.tick(FPS)
 
+# ─────────────────────────────────────────
+#  CLEAN UP
+# ─────────────────────────────────────────
 pygame.quit()
 sys.exit()
