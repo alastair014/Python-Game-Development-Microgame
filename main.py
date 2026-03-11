@@ -11,8 +11,24 @@ CONTROLS:
     ESC         → Quit the game
 """
 
-import pygame
+import os
 import sys
+
+# ── Headless / Codespaces environment fixes ───────────────────────────────────
+# Xvfb virtual display (started by postStartCommand)
+if not os.environ.get("DISPLAY"):
+    os.environ["DISPLAY"] = ":99"
+
+# Suppress the "XDG_RUNTIME_DIR is invalid" warning
+if not os.environ.get("XDG_RUNTIME_DIR"):
+    os.environ["XDG_RUNTIME_DIR"] = "/tmp/runtime-vscode"
+    os.makedirs("/tmp/runtime-vscode", exist_ok=True)
+
+# Tell SDL to use a dummy audio driver — silences all ALSA "no sound card" errors
+# (Codespaces has no audio hardware; this is safe and expected)
+os.environ["SDL_AUDIODRIVER"] = "dummy"
+
+import pygame
 
 # ─────────────────────────────────────────
 #  INITIALISE pygame
