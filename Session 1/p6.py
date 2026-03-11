@@ -1,7 +1,7 @@
 """
 main.py — pygame Starter Project
 =================================
-Session 1 Template: Player Movement + Enemy Block
+Session 1 — Part 6 Solution: Full Continuous Update/Render Loop
 
 HOW TO RUN:
     python main.py
