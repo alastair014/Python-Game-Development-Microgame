@@ -44,6 +44,7 @@ FPS = 60
 BLACK  = (  0,   0,   0)
 WHITE  = (255, 255, 255)
 RED    = (255,   0,   0)
+GREEN = (0,   255,   0)
 GRAY   = ( 40,  40,  40)   # subtle grid / background tint
 
 # ─────────────────────────────────────────
@@ -57,6 +58,15 @@ PLAYER_SPEED = 5
 # Enemy   — red square, starts centre-right
 enemy = pygame.Rect(300, 200, 40, 40)
 ENEMY_SPEED = 3
+
+collectibles = [
+    pygame.Rect(300, 100, 20, 20),
+    pygame.Rect(500, 300, 20, 20)
+]
+
+hazards = [
+    pygame.Rect(400, 150, 30, 30),
+]
 
 # ─────────────────────────────────────────
 #  HELPER: draw a simple grid (optional visual)
@@ -100,9 +110,27 @@ while running:
     player.clamp_ip(screen.get_rect())
 
     # 3. Move enemy left; wrap around when off-screen
-    enemy.x -= ENEMY_SPEED
-    if enemy.right < 0:
-        enemy.x = SCREEN_WIDTH
+    # enemy.x -= ENEMY_SPEED
+    # if enemy.right < 0:
+    #     enemy.x = SCREEN_WIDTH
+    
+    for c in collectibles[:]:
+        if player.colliderect(c):
+            collectibles.remove(c)
+            # feedback placeholder
+    
+    # Hazard movement
+    for h in hazards:
+        h.x -= 3
+        if h.x < -30:
+            h.x = SCREEN_WIDTH
+    
+    # Hazard 
+    for h in hazards:
+        if player.colliderect(h):
+            
+            # feedback placeholder
+            player.x, player.y = 100, 200
 
     # ── RENDER ───────────────────────────
 
@@ -114,7 +142,13 @@ while running:
 
     # 3. Draw game objects
     pygame.draw.rect(screen, WHITE, player)   # player
-    pygame.draw.rect(screen, RED,   enemy)    # enemy
+    # pygame.draw.rect(screen, RED,   enemy)    # enemy
+
+    for c in collectibles:
+        pygame.draw.rect(screen, GREEN, c)
+
+    for h in hazards:
+        pygame.draw.rect(screen, RED, h)
 
     # 4. Flip / update the display
     pygame.display.flip()
