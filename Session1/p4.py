@@ -1,14 +1,13 @@
 """
 main.py — pygame Starter Project
 =================================
-Session 1 — Part 4 Solution: Player Movement
+Session 1 Template: Run the Starter pygame Window
 
 HOW TO RUN:
     python main.py
 
 CONTROLS:
-    Arrow Keys  → Move the white player square
-    ESC         → Quit the game
+    ESC  → Quit the game
 """
 
 import os
@@ -52,25 +51,8 @@ FPS = 60
 # ─────────────────────────────────────────
 BLACK  = (  0,   0,   0)
 WHITE  = (255, 255, 255)
+RED    = (255,   0,   0)
 GRAY   = ( 40,  40,  40)
-
-# ─────────────────────────────────────────
-#  GAME OBJECTS
-# ─────────────────────────────────────────
-
-# Player — white square, starts near top-left
-# pygame.Rect(x, y, width, height)
-player = pygame.Rect(100, 100, 40, 40)
-PLAYER_SPEED = 5
-
-# ─────────────────────────────────────────
-#  HELPER: draw a simple grid (optional visual)
-# ─────────────────────────────────────────
-def draw_grid():
-    for x in range(0, SCREEN_WIDTH, 40):
-        pygame.draw.line(screen, GRAY, (x, 0), (x, SCREEN_HEIGHT))
-    for y in range(0, SCREEN_HEIGHT, 40):
-        pygame.draw.line(screen, GRAY, (0, y), (SCREEN_WIDTH, y))
 
 # ─────────────────────────────────────────
 #  GAME LOOP
@@ -88,37 +70,17 @@ while running:
                 running = False
 
     # ── UPDATE ───────────────────────────
-
-    # 1. Read keyboard input & move player
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_LEFT]:
-        player.x -= PLAYER_SPEED
-    if keys[pygame.K_RIGHT]:
-        player.x += PLAYER_SPEED
-    if keys[pygame.K_UP]:
-        player.y -= PLAYER_SPEED      # NOTE: UP decreases y in pygame
-    if keys[pygame.K_DOWN]:
-        player.y += PLAYER_SPEED
-
-    # 2. Keep player inside the window
-    player.clamp_ip(screen.get_rect())
+    # (nothing to update yet!)
 
     # ── RENDER ───────────────────────────
 
-    # 1. Clear the screen
+    # 1. Clear the screen with a background colour
     screen.fill(BLACK)
 
-    # 2. Optional subtle grid
-    draw_grid()
-
-    # 3. Draw the player
-    pygame.draw.rect(screen, WHITE, player)
-
-    # 4. Flip / update the display
+    # 2. Flip / update the display
     pygame.display.flip()
 
-    # 5. Tick the clock (cap at FPS)
+    # 3. Tick the clock (cap at FPS)
     clock.tick(FPS)
 
 # ─────────────────────────────────────────

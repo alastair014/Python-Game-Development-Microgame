@@ -1,7 +1,7 @@
 """
 main.py — pygame Starter Project
 =================================
-Session 1 — Part 6 Solution: Full Continuous Update/Render Loop
+Session 1 — Part 5 Solution: Player Movement + Enemy Block
 
 HOW TO RUN:
     python main.py
@@ -15,17 +15,13 @@ import os
 import sys
 
 # ── Headless / Codespaces environment fixes ───────────────────────────────────
-# Xvfb virtual display (started by postStartCommand)
 if not os.environ.get("DISPLAY"):
     os.environ["DISPLAY"] = ":99"
 
-# Suppress the "XDG_RUNTIME_DIR is invalid" warning
 if not os.environ.get("XDG_RUNTIME_DIR"):
     os.environ["XDG_RUNTIME_DIR"] = "/tmp/runtime-vscode"
     os.makedirs("/tmp/runtime-vscode", exist_ok=True)
 
-# Tell SDL to use a dummy audio driver — silences all ALSA "no sound card" errors
-# (Codespaces has no audio hardware; this is safe and expected)
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 
 import pygame
@@ -57,17 +53,17 @@ FPS = 60
 BLACK  = (  0,   0,   0)
 WHITE  = (255, 255, 255)
 RED    = (255,   0,   0)
-GRAY   = ( 40,  40,  40)   # subtle grid / background tint
+GRAY   = ( 40,  40,  40)
 
 # ─────────────────────────────────────────
 #  GAME OBJECTS
 # ─────────────────────────────────────────
 
-# Player  — white square, starts near top-left
+# Player — white square, starts near top-left
 player = pygame.Rect(100, 100, 40, 40)
 PLAYER_SPEED = 5
 
-# Enemy   — red square, starts centre-right
+# Enemy — red square, starts centre-right
 enemy = pygame.Rect(300, 200, 40, 40)
 ENEMY_SPEED = 3
 
@@ -105,7 +101,7 @@ while running:
     if keys[pygame.K_RIGHT]:
         player.x += PLAYER_SPEED
     if keys[pygame.K_UP]:
-        player.y -= PLAYER_SPEED          # NOTE: UP decreases y in pygame
+        player.y -= PLAYER_SPEED      # NOTE: UP decreases y in pygame
     if keys[pygame.K_DOWN]:
         player.y += PLAYER_SPEED
 

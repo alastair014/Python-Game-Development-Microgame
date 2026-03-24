@@ -1,7 +1,7 @@
 """
 main.py — pygame Starter Project
 =================================
-Session 1 — Part 5 Solution: Player Movement + Enemy Block
+Session 1 — Part 4 Solution: Player Movement
 
 HOW TO RUN:
     python main.py
@@ -52,7 +52,6 @@ FPS = 60
 # ─────────────────────────────────────────
 BLACK  = (  0,   0,   0)
 WHITE  = (255, 255, 255)
-RED    = (255,   0,   0)
 GRAY   = ( 40,  40,  40)
 
 # ─────────────────────────────────────────
@@ -60,12 +59,9 @@ GRAY   = ( 40,  40,  40)
 # ─────────────────────────────────────────
 
 # Player — white square, starts near top-left
+# pygame.Rect(x, y, width, height)
 player = pygame.Rect(100, 100, 40, 40)
 PLAYER_SPEED = 5
-
-# Enemy — red square, starts centre-right
-enemy = pygame.Rect(300, 200, 40, 40)
-ENEMY_SPEED = 3
 
 # ─────────────────────────────────────────
 #  HELPER: draw a simple grid (optional visual)
@@ -108,11 +104,6 @@ while running:
     # 2. Keep player inside the window
     player.clamp_ip(screen.get_rect())
 
-    # 3. Move enemy left; wrap around when off-screen
-    enemy.x -= ENEMY_SPEED
-    if enemy.right < 0:
-        enemy.x = SCREEN_WIDTH
-
     # ── RENDER ───────────────────────────
 
     # 1. Clear the screen
@@ -121,9 +112,8 @@ while running:
     # 2. Optional subtle grid
     draw_grid()
 
-    # 3. Draw game objects
-    pygame.draw.rect(screen, WHITE, player)   # player
-    pygame.draw.rect(screen, RED,   enemy)    # enemy
+    # 3. Draw the player
+    pygame.draw.rect(screen, WHITE, player)
 
     # 4. Flip / update the display
     pygame.display.flip()
