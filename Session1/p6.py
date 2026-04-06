@@ -1,16 +1,3 @@
-"""
-main.py — pygame Starter Project
-=================================
-Session 1 — Part 5 Solution: Player Movement + Enemy Block
-
-HOW TO RUN:
-    python main.py
-
-CONTROLS:
-    Arrow Keys  → Move the white player square
-    ESC         → Quit the game
-"""
-
 import os
 import sys
 

@@ -10,6 +10,7 @@
     }
   },
   "postCreateCommand": "pip install pygame",
+  "postStartCommand": "bash /usr/local/share/desktop-init.sh",  // ← ADD THIS
   "forwardPorts": [6080],
   "portsAttributes": {
     "6080": {
