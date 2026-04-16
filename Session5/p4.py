@@ -55,10 +55,6 @@ GRAY   = ( 40,  40,  40)   # subtle grid / background tint
 player = pygame.Rect(100, 100, 40, 40)
 PLAYER_SPEED = 5
 
-# Enemy   — red square, starts centre-right
-enemy = pygame.Rect(300, 200, 40, 40)
-ENEMY_SPEED = 3
-
 collectibles = [
     pygame.Rect(300, 100, 20, 20),
     pygame.Rect(500, 300, 20, 20)
@@ -108,11 +104,6 @@ while running:
 
     # 2. Keep player inside the window
     player.clamp_ip(screen.get_rect())
-
-    # 3. Move enemy left; wrap around when off-screen
-    # enemy.x -= ENEMY_SPEED
-    # if enemy.right < 0:
-    #     enemy.x = SCREEN_WIDTH
     
     for c in collectibles[:]:
         if player.colliderect(c):
@@ -142,7 +133,6 @@ while running:
 
     # 3. Draw game objects
     pygame.draw.rect(screen, WHITE, player)   # player
-    # pygame.draw.rect(screen, RED,   enemy)    # enemy
 
     for c in collectibles:
         pygame.draw.rect(screen, GREEN, c)
