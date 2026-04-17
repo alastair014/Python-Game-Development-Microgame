@@ -47,18 +47,13 @@ RED    = (255,   0,   0)
 GREEN = (0,   255,   0)
 GRAY   = ( 40,  40,  40)   # subtle grid / background tint
 
-font = pygame.font.Font(None, 36)
 # ─────────────────────────────────────────
-#  GAME OBJECTS & VARIABLES
+#  GAME OBJECTS
 # ─────────────────────────────────────────
 
 # Player  — white square, starts near top-left
 player = pygame.Rect(100, 100, 40, 40)
 PLAYER_SPEED = 5
-
-# Enemy   — red square, starts centre-right
-enemy = pygame.Rect(300, 200, 40, 40)
-ENEMY_SPEED = 3
 
 collectibles = [
     pygame.Rect(300, 100, 20, 20),
@@ -69,10 +64,13 @@ hazards = [
     pygame.Rect(400, 150, 30, 30),
 ]
 
-# Add more hazards
-# hazards.append(pygame.Rect(600, 250, 30, 30))
+# ─────────────────────────────────────────
+#  VARIABLES
+# ─────────────────────────────────────────
 
 score = 0
+font = pygame.font.Font(None, 36)
+game_over = False
 
 # ─────────────────────────────────────────
 #  HELPER: draw a simple grid (optional visual)
@@ -87,7 +85,6 @@ def draw_grid():
 #  GAME LOOP
 # ─────────────────────────────────────────
 running = True
-game_over = False
 
 while running:
 
@@ -115,17 +112,13 @@ while running:
 
     # 2. Keep player inside the window
     player.clamp_ip(screen.get_rect())
-
-    # 3. Move enemy left; wrap around when off-screen
-    # enemy.x -= ENEMY_SPEED
-    # if enemy.right < 0:
-    #     enemy.x = SCREEN_WIDTH
     
     for c in collectibles[:]:
         if player.colliderect(c):
             collectibles.remove(c)
             score += 1
-
+            
+            # Feedback: Colour flash
             screen.fill(GREEN)
             pygame.display.flip()
             pygame.time.delay(60)
@@ -135,16 +128,12 @@ while running:
         h.x -= 3
         if h.x < -30:
             h.x = SCREEN_WIDTH
-        h.y += 2
-        if h.y > SCREEN_HEIGHT:
-            h.y = 0
     
     # Hazard 
     for h in hazards:
         if player.colliderect(h):
-            player.x, player.y = 100, 200
             game_over = True
-
+    
     if game_over:
         # Screen flash
         screen.fill(RED)
@@ -160,32 +149,31 @@ while running:
         ]
 
         game_over = False
-
     # ── RENDER ───────────────────────────
 
-    # 1. Clear the screen
+    # Clear the screen
     screen.fill(BLACK)
 
-    # 2. Optional subtle grid
+    # Optional subtle grid
     draw_grid()
 
-    # 3. Draw game objects
+    # Draw game objects
     pygame.draw.rect(screen, WHITE, player)   # player
-    # pygame.draw.rect(screen, RED,   enemy)    # enemy
 
     for c in collectibles:
         pygame.draw.rect(screen, GREEN, c)
 
     for h in hazards:
         pygame.draw.rect(screen, RED, h)
-    
+
+    # Display score
     score_text = font.render(f"Score: {score}", True, WHITE)
     screen.blit(score_text, (10, 10))
 
-    # 4. Flip / update the display
+    # Flip / update the display
     pygame.display.flip()
 
-    # 5. Tick the clock (cap at FPS)
+    # Tick the clock (cap at FPS)
     clock.tick(FPS)
 
 # ─────────────────────────────────────────
