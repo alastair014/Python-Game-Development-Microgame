@@ -120,6 +120,7 @@ while running:
 
         if player.colliderect(enemy):
             state = "gameover"
+            player.x, player.y = 300, 200
 
     # ── RENDER: MENU ─────────────────────────────────────────────────────────
     # Draw the title screen with instructions when in menu state
