@@ -79,11 +79,11 @@ score = 0
 # ─────────────────────────────────────────
 #  HELPER: draw a simple grid (optional visual)
 # ─────────────────────────────────────────
-def draw_grid():
+def draw_grid(surface):
     for x in range(0, SCREEN_WIDTH, 40):
-        pygame.draw.line(screen, GRAY, (x, 0), (x, SCREEN_HEIGHT))
+        pygame.draw.line(surface, GRAY, (x, 0), (x, SCREEN_HEIGHT))
     for y in range(0, SCREEN_HEIGHT, 40):
-        pygame.draw.line(screen, GRAY, (0, y), (SCREEN_WIDTH, y))
+        pygame.draw.line(surface, GRAY, (0, y), (SCREEN_WIDTH, y))
 
 # ─────────────────────────────────────────
 #  GAME LOOP
@@ -147,8 +147,8 @@ while running:
         # If the player touches a enemy, game over
         for e in enemies:
             if player.colliderect(e):
-                if not pending_gameover:          # trigger once
-                    shake_offsets = screen_shake(intensity=8, duration=20)
+                if not pending_gameover:          
+                    shake_offsets = screen_shake()
                     pending_gameover = True
 
         score += 1
@@ -181,7 +181,7 @@ while running:
     elif state == "gameplay":
         game_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         game_surface.fill(BLACK)
-        draw_grid()
+        draw_grid(game_surface)
 
         # Draw the Player square
         pygame.draw.rect(game_surface, WHITE, player)
