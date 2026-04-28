@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,7 +19,8 @@ jobs:
 
       - run: pip install pygbag
 
-      - run: pygbag --build DeploymentExample   # adjust folder name if different
+      - run: pygbag --build .
+        working-directory: DeploymentExample
 
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
