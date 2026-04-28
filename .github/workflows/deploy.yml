@@ -1,0 +1,23 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install pygbag
+
+      - run: pygbag --build my_game   # adjust folder name if different
+
+      - uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: my_game/build/web
