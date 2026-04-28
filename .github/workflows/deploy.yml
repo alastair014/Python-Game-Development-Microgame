@@ -16,8 +16,8 @@ jobs:
 
       - run: pip install pygbag
 
-      - run: pygbag --build my_game   # adjust folder name if different
+      - run: pygbag --build DeploymentExample   # adjust folder name if different
 
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: my_game/build/web
+          folder: DeploymentExample/build/web

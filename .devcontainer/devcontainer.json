@@ -9,7 +9,7 @@
       "webPort": 6080
     }
   },
-  "postCreateCommand": "pip install pygame",
+  "postCreateCommand": "pip install pygame pygbag",
   "postStartCommand": "bash /usr/local/share/desktop-init.sh",
   "forwardPorts": [6080],
   "portsAttributes": {
